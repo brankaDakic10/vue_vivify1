@@ -1,6 +1,6 @@
 <template>
   <div class="container">
-   Add    Contact 
+
     <article class="col-8 bgr">
         <h4>Add Contact </h4>
             <form @submit.prevent="addNew">
