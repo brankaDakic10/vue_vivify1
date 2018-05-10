@@ -10,12 +10,12 @@ export default class ContactService{
     list(){
         return contacts
    }
-   addContact(contact){
-    contact.id=nextId
-    contacts.push(contact)
-    nextId++
+//    addContact(contact){
+//     contact.id=nextId
+//     contacts.push(contact)
+//     nextId++
        
-   }
+//    }
 }
 
 export const contactService=new ContactService()

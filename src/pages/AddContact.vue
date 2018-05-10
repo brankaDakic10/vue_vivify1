@@ -2,12 +2,17 @@
   <div class="container">
 
     <article class="col-8 bgr">
-        <h4>Add Contact </h4>
+        <!-- <h4>Add Contact </h4> -->
+        <h2>{{ this.$route.params.id ? 'Edit contact' : 'Add new contact'}}</h2>
             <form @submit.prevent="addNew">
            
             <div class="form-group">
-                <label >Name</label>
-                <input type="text"  v-model="newContact.name" class="form-control"  placeholder=" Enter name ">
+                <label >First Name</label>
+                <input type="text"  v-model="newContact.first_name" class="form-control"  placeholder=" Enter name ">
+            </div>
+             <div class="form-group">
+                <label >Last Name</label>
+                <input type="text"  v-model="newContact.last_name" class="form-control"  placeholder=" Enter name ">
             </div>
              <div class="form-group">
                 <label >Email</label>
@@ -27,11 +32,25 @@
 </template>
 <script>
 import {contactService} from '../utils/ContactService'
+import {contact} from '../utils/Contact'
 export default {
+  created() {
+        if(this.$route.params.id){
+        contact.get(this.$route.params.id)
+        .then((response) => {
+            this.newContact=response.data
+           
+        }).catch((error) => {
+            console.log(error)
+        })
+      }
+        
+    },
   data(){
     return{
       newContact:{
-        name:'',
+        first_name:'',
+        last_name:'',
         email:'',
         number:''
       }
@@ -39,8 +58,35 @@ export default {
   },
   methods:{
     addNew(){
-      contactService.addContact(this.newContact)
-    }
+       
+          
+          if(this.$route.params.id)
+          {
+            contact.edit(this.$route.params.id, this.newContact)
+           .then((response)=> {
+          
+            this.$router.push('/contacts')
+          }).catch((error)=>{
+            console.log('Edit: '+ error)
+         })  
+          
+          }
+          else
+          {
+           contact.add(this.newContact)
+             .then((response)=> {
+           
+             this.$router.push('/contacts')
+           }).catch((error)=>{
+            console.log(error)
+          
+          }) 
+          }
+
+
+
+
+   }
   }
 }
 </script>
